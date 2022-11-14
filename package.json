@@ -2,6 +2,13 @@
   "name": "ferramentas",
   "version": "0.1.0",
   "private": true,
+  "browser": {
+    "fs": false,
+    "path": false,
+    "os": false,
+    "net": false,
+    "tls": false
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -13,12 +20,10 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "framer-motion": "^7.6.6",
+    "fs": "^0.0.1-security",
     "next": "13.0.3",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
-  },
-  "devDependencies": {
-    "eslint": "8.27.0",
-    "eslint-config-next": "13.0.3"
+    "react-dom": "18.2.0",
+    "uglify-js": "^3.17.4"
   }
 }
