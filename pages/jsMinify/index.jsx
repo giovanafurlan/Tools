@@ -21,10 +21,12 @@ export default function JSMinify() {
   const formatString = () => {
     setDisplay(true);
     let temp = string;
-    temp = temp
+    temp = temp.replace(/([^0-9a-zA-Z\.#])\s+/g, "$1")
+      .replace(/\<\!--\s*?[^\s?\[][\s\S]*?--\>/g, '')
+      .replace(/\>\s*\</g, '><');
     setString(temp);
   }
- 
+
   return (
     <Container
       py='4'
