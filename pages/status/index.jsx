@@ -5,50 +5,90 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Text
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Tr
 } from "@chakra-ui/react";
 import Menu from '../components/Menu';
-import axios from 'axios';
 
 export default function Status() {
 
   const [string, setString] = useState('');
   const [result, setResult] = useState('');
+  const [paths, setPaths] = useState([]);
 
   const handleChange = (e) => {
     setString(e.target.value);
   }
 
-  async function SendURL() {
-    fetch("/api/status", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        user: {
-          url: string
-        },
-      }),
+  function SendURL() {
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      user: {
+        url: string
+      }
     });
 
-    await fetch("/api/status", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    })
-      .then(function (response) {
-        console.log(JSON.parse(response.data));
-        setResult()
-      })
-      .catch(function (error) {
-        console.log('erro index', error);
-      });
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
 
+    fetch("/api/status", requestOptions)
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+
+        setPaths(result.data);
+
+        const data = result;
+        setResult(
+          <Table variant='simple'>
+            <Tbody>
+              <Tr>
+                <Td>
+                  URL
+                </Td>
+                <Td>
+                  {data.meta.url}
+                </Td>
+              </Tr>
+              <Tr>
+                <Td>
+                  status code
+                </Td>
+                <Td>
+                  {data.apiCode} {data.apiStatus}
+                </Td>
+              </Tr>
+              <Tr>
+                <Td>
+                  message
+                </Td>
+                <Td>
+                  {data.message}
+                </Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        );
+      })
+      .catch(error => console.log('error index', error));
   }
 
   return (
     <Menu>
       <Container
         py='4'
-        maxW={'8xl'}>
+        px='0'
+        maxW={'5xl'}>
         <FormControl
           isRequired>
           <FormLabel>
@@ -62,9 +102,29 @@ export default function Status() {
             my='4'>
             Check
           </Button>
-          <Text>
+          <TableContainer>
             {result}
-          </Text>
+          </TableContainer>
+            {/* <TableContainer>
+              <Table
+                variant='simple'>
+                <Tbody>
+                  {paths.map((data, key) => {
+                    return (
+                      <Tr
+                        key={key}>
+                        <Td>
+                          {data.link}
+                        </Td>
+                        <Td>
+                          status {data.status}
+                        </Td>
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+              </Table>
+            </TableContainer> */}
         </FormControl>
       </Container>
     </Menu>

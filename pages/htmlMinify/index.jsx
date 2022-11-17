@@ -32,7 +32,8 @@ export default function HTMLMinify() {
     <Menu>
       <Container
         py='4'
-        maxW={'8xl'}>
+        px='0'
+        maxW={'5xl'}>
         <FormControl
           isRequired>
           <FormLabel>

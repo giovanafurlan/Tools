@@ -1,6 +1,6 @@
 var axios = require('axios');
 
-export default async function handler(req, res) {
+export default function handler(req, res) {
     const {
         user
     } = req.body;
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
         data: data
     };
 
-    await axios(config)
+    axios(config)
         .then(function (response) {
             res.status(200).json(response.data);
             console.log(JSON.stringify(response.data));
