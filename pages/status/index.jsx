@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Button,
   Container,
@@ -6,8 +7,8 @@ import {
   Input,
   Text
 } from "@chakra-ui/react";
-import { useState } from "react";
-import $ from 'jquery';
+import Menu from '../components/Menu';
+import axios from 'axios';
 
 export default function Status() {
 
@@ -18,41 +19,54 @@ export default function Status() {
     setString(e.target.value);
   }
 
-  function urlExists(url, callback) {
-    var xhr = new XMLHttpRequest();
-    xhr.onreadystatechange = function() {
-      if (xhr.readyState === 4) {
-        callback(xhr.status < 400);
-      }
-    };
-    xhr.open('HEAD', url);
-    xhr.send();
+  async function SendURL() {
+    fetch("/api/status", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        user: {
+          url: string
+        },
+      }),
+    });
+
+    await fetch("/api/status", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    })
+      .then(function (response) {
+        console.log(JSON.parse(response.data));
+        setResult()
+      })
+      .catch(function (error) {
+        console.log('erro index', error);
+      });
+
   }
-  
-  urlExists('https://www.figma.com/', function(exists) {
-      console.log('"%s" exists?', 'https://www.figma.com/', exists);
-  });
 
   return (
-    <Container
-      py='4'
-      maxW={'8xl'}>
-      <FormControl
-        isRequired>
-        <FormLabel>
-          Domain
-        </FormLabel>
-        <Input
-          onChange={handleChange}
-          placeholder='Paste the domain here' />
-        <Button
-          my='4'>
-          Check
-        </Button>
-        <Text>
-          {result}
-        </Text>
-      </FormControl>
-    </Container>
+    <Menu>
+      <Container
+        py='4'
+        maxW={'8xl'}>
+        <FormControl
+          isRequired>
+          <FormLabel>
+            Status Domain
+          </FormLabel>
+          <Input
+            onChange={handleChange}
+            placeholder='Paste the domain here' />
+          <Button
+            onClick={() => { SendURL() }}
+            my='4'>
+            Check
+          </Button>
+          <Text>
+            {result}
+          </Text>
+        </FormControl>
+      </Container>
+    </Menu>
   )
 }

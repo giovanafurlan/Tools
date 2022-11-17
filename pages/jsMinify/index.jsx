@@ -6,6 +6,7 @@ import {
   Textarea
 } from "@chakra-ui/react";
 import { useState } from "react";
+import Menu from '../components/Menu';
 import CopyClipboard from "../components/CopyClipboard";
 
 export default function JSMinify() {
@@ -20,39 +21,60 @@ export default function JSMinify() {
 
   const formatString = () => {
     setDisplay(true);
-    let temp = string;
-    temp = temp.replace(/([^0-9a-zA-Z\.#])\s+/g, "$1")
-      .replace(/\<\!--\s*?[^\s?\[][\s\S]*?--\>/g, '')
-      .replace(/\>\s*\</g, '><');
-    setString(temp);
+    var axios = require('axios');
+    var qs = require('qs');
+
+    var data = qs.stringify({
+      'input': string
+    });
+    var config = {
+      method: 'post',
+      url: 'https://www.toptal.com/developers/javascript-minifier/api/raw',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data: data
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        setString(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
   }
 
   return (
-    <Container
-      py='4'
-      maxW={'8xl'}>
-      <FormControl
-        isRequired>
-        <FormLabel>
-          JS Code
-        </FormLabel>
-        <Textarea
-          onChange={handleChange}
-          placeholder='Paste your JS code here'
-          rows={'8'} />
-        <Button
-          onClick={formatString}
-          my='4'>
-          Minify
-        </Button>
-        <Textarea
-          value={isDisplay && string}
-          placeholder='Result'
-          readOnly
-          rows={'8'} />
-        <CopyClipboard
-          copyText={string} />
-      </FormControl>
-    </Container>
+    <Menu>
+      <Container
+        py='4'
+        maxW={'8xl'}>
+        <FormControl
+          isRequired>
+          <FormLabel>
+            JS Code
+          </FormLabel>
+          <Textarea
+            onChange={handleChange}
+            placeholder='Paste your JS code here'
+            rows={'8'} />
+          <Button
+            onClick={formatString}
+            my='4'>
+            Minify
+          </Button>
+          <Textarea
+            value={isDisplay && string}
+            placeholder='Result'
+            readOnly
+            rows={'8'} />
+          <CopyClipboard
+            copyText={string} />
+        </FormControl>
+      </Container>
+    </Menu>
   )
 }

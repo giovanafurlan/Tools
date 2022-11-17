@@ -6,7 +6,8 @@ import {
   Textarea
 } from "@chakra-ui/react";
 import { useState } from "react";
-import CopyClipboard from "./components/CopyClipboard";
+import Menu from '../components/Menu';
+import CopyClipboard from "../components/CopyClipboard";
 
 export default function CSSMinify() {
 
@@ -29,31 +30,33 @@ export default function CSSMinify() {
   }
 
   return (
-    <Container
-      py='4'
-      maxW={'8xl'}>
-      <FormControl
-        isRequired>
-        <FormLabel>
-          CSS Code
-        </FormLabel>
-        <Textarea
-          onChange={handleChange}
-          placeholder='Paste your CSS code here'
-          rows={'8'} />
-        <Button
-          onClick={formatString}
-          my='4'>
-          Minify
-        </Button>
-        <Textarea
-          value={isDisplay && string}
-          placeholder='Result'
-          readOnly
-          rows={'8'} />
-        <CopyClipboard
-          copyText={string} />
-      </FormControl>
-    </Container>
+    <Menu>
+      <Container
+        py='4'
+        maxW={'8xl'}>
+        <FormControl
+          isRequired>
+          <FormLabel>
+            CSS Code
+          </FormLabel>
+          <Textarea
+            onChange={handleChange}
+            placeholder='Paste your CSS code here'
+            rows={'8'} />
+          <Button
+            onClick={formatString}
+            my='4'>
+            Minify
+          </Button>
+          <Textarea
+            value={isDisplay && string}
+            placeholder='Result'
+            readOnly
+            rows={'8'} />
+          <CopyClipboard
+            copyText={string} />
+        </FormControl>
+      </Container>
+    </Menu>
   )
 }

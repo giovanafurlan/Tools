@@ -1,34 +1,24 @@
+var axios = require('axios');
+
 export default async function handler(req, res) {
-  const { user } = req.body;
+  const {
+    user
+  } = req.body;
 
-  console.log(user);
-
-  var myHeaders = new Headers();
-
-  var requestOptions = {
-    method: "GET",
-    headers: myHeaders,
-    redirect: "follow",
+  var config = {
+    method: 'get',
+    url: `https://api.ip2whois.com/v2?key=65ED04B517E05788FA98313B0DEB8ADE&domain=${user.url}`,
+    headers: {
+      'Content-Type': 'application/json'
+    }
   };
 
-  fetch(user, requestOptions)
-    .then((response) => response.json())
-    .then((result) => {
-      const details = JSON.stringify(result);
-      console.log("Details: ", details);
-      res.status(200).json(
-        JSON.stringify({
-          status: user,
-        })
-      );
+  axios(config)
+    .then(function (response) {
+      res.status(200).json(response.data);
+      console.log(JSON.stringify(response.data));
     })
-    .catch((error) => {
-      console.log("Error: ", error);
-      res.status(500).json(
-        JSON.stringify({
-          status: "error",
-          error,
-        })
-      );
+    .catch(function (error) {
+      console.log(error);
     });
 }
