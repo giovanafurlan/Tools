@@ -6,8 +6,8 @@ import {
   Textarea
 } from "@chakra-ui/react";
 import { useState } from "react";
-import Menu from '../components/Menu';
-import CopyClipboard from "../components/CopyClipboard";
+import Menu from '../../components/Menu';
+import CopyClipboard from "../../components/CopyClipboard";
 
 export default function JSMinify() {
 
