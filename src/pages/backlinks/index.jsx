@@ -6,7 +6,7 @@ import {
   Input,
   Text,
 } from "@chakra-ui/react";
-import Menu from '../components/Menu';
+import Menu from '../../components/Menu';
 import { useState } from "react";
 
 export default function Backlinks() {
@@ -22,21 +22,33 @@ export default function Backlinks() {
 
     var axios = require('axios');
 
-    var config = {
-      method: 'get',
-      url: 'https://api.ip2whois.com/v2?key=65ED04B517E05788FA98313B0DEB8ADE&domain=webpeak.com',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    };
+    const post_array = [];
+    
+    post_array.push({
+      "target": string,
+      "mode": "as_is",
+      "filters": ["dofollow", "=", true],
+      "limit": 5
+    });
 
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
+    axios({
+      method: 'post',
+      url: 'https://api.dataforseo.com/v3/backlinks/backlinks/live',
+      auth: {
+        username: 'deyec27597@teknowa.com',
+        password: '794b74ecf5f42e2d'
+      },
+      data: post_array,
+      headers: {
+        'content-type': 'application/json'
+      }
+    }).then(function (response) {
+      var result = response['data']['tasks'];
+      // Result data
+      console.log(result);
+    }).catch(function (error) {
+      console.log(error);
+    });
   }
 
   return (

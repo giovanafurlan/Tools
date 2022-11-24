@@ -11,7 +11,7 @@ import {
   Td,
   Tr
 } from "@chakra-ui/react";
-import Menu from '../components/Menu';
+import Menu from '../../components/Menu';
 
 export default function Status() {
 
